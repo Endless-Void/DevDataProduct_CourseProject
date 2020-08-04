@@ -33,6 +33,7 @@ navbarPage("My Apps",
 
         # Show a plot of the generated distribution
         mainPanel(
+            h3("Input the number of petals and the available color of the flower you want."),
             plotOutput("FlowerPlot")
         )
     )
@@ -44,10 +45,11 @@ tabPanel("Nice Looking Graph",
                  sliderInput("a", "A", min = -10, max = 10, value = 4.23),
                  sliderInput("b", "B", min = -10, max = 10, value = 2.35),
                  numericInput("numeric", "Line Width", value = 3, min = 1, 
-                              max = 10, step = 1)
+                              max = 20, step = 1)
              ),
              mainPanel(
-                 plotOutput("NiceGraph", height = "700px", width = "700px")
+                 h3("Set the A and B parameter to make some interesting plots with the line width you want."),
+                 plotOutput("NiceGraph", height = "500px", width = "500px")
              )
          )
     ),
@@ -82,17 +84,30 @@ tabPanel("Diamonds",
                                "Set 3" = "Set3",
                                "Set 4" = "Paired",
                                "Set 5" = "Accent",
-                               "Set 6" = "Dark2"))
+                               "Set 6" = "Dark2")),
+                 numericInput("predictor", "Input your predictor value:", value = 1000, min = 1, 
+                              max = 50000, step = 1),
+                 h5("Note: Predictions Available Only For The Scatter Plot.")
                  
              ),
              mainPanel(
                  tabsetPanel(type = "tabs",
-                             tabPanel("Scatter Plot", br(), plotOutput("D1Graph"), 
-                                      textOutput("fit1"), textOutput("fit2")),
-                             tabPanel("BoxPlots", br(), plotOutput("D2Graph"), 
-                                      h4("Statistical Summary By type of Cut"),
+                             tabPanel("Scatter Plot", br(), 
+                                      h3("Preset the scatter plot you want, you can also predict a input value depends of the scatter plot you set"), 
+                                      plotOutput("D1Graph"),
+                                      h4("Lineal Model Coefficients"),
+                                      textOutput("fit1"), textOutput("fit2"),
+                                      h4("Prediction Value From the Input:"),
+                                      textOutput("predout"),
+                                      h4("Summary Info. About the Linear Model:"),
+                                      verbatimTextOutput("sumfit")),
+                             tabPanel("BoxPlots", br(), h3("Define the Boxplot that you want discretized by type of cut."), 
+                                      plotOutput("D2Graph"), 
+                                      h4("Statistical Summary By Type of Cut"),
                                       verbatimTextOutput("sum")),
-                             tabPanel("Density Plots", br(), plotOutput("D3Graph"))
+                             tabPanel("Density Plots", br(), 
+                                      h3("Select the density plot of the variable you want discretized by type of cut,"), 
+                                      plotOutput("D3Graph"))
                  )
              )
          )

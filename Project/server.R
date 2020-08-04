@@ -9,6 +9,7 @@
 
 library(shiny)
 library(ggplot2)
+library(dplyr)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
@@ -21,7 +22,7 @@ shinyServer(function(input, output) {
         ylab <- ifelse(input$show_ylab, "Rho", "")
         # draw the histogram with the specified number of bins
         ggplot(data.frame(t, y), aes(t, y)) + 
-            geom_line(color = input$variable) + 
+            geom_line(color = input$variable, lwd = 3) + 
             coord_polar() +
             xlab(xlab) + ylab(ylab)
         
@@ -49,6 +50,8 @@ shinyServer(function(input, output) {
         fit <- lm(reformulate(input$variableX, input$variableY), data = data)
         output$fit1 <-  renderText({paste("Betha0 = ",round(coef(fit)[1], digits = 6))})
         output$fit2 <-  renderText({paste("Betha1 = ",round(coef(fit)[2], digits = 6))})
+        output$sumfit <- renderPrint({summary(fit)})
+        output$predout <- renderText({coef(fit)[1] + coef(fit)[2] * as.numeric(input$predictor)})
         ggplot(data, aes_string(input$variableX, input$variableY)) + 
             geom_point(aes(color = cut), alpha = input$alph) +
             scale_colour_brewer(palette = input$colorbrew, direction = -1) + 
@@ -112,7 +115,7 @@ shinyServer(function(input, output) {
             theme(axis.text=element_text(size=15),
                   plot.caption = element_text(size = 15, face = "italic"),
                   legend.text = element_text(size = 15)) +
-            labs(caption = "Note: Here the X Axis its Fixed")
+            labs(caption = "Note: Here The X Axis Its the Only One That We Can Change")
     })
     
 })

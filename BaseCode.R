@@ -24,6 +24,7 @@ plot <- ggplot(data, aes(carat, price)) +
         geom_point(aes(color = cut), alpha = 0.1) +
         scale_colour_brewer(palette = "Set1", direction = -1) +
         geom_abline(intercept = coef(fit)[1], slope = coef(fit)[2])
+predict(fit, newdata = data.frame(carat = 2))
 plot
 ##3.2 Boxplot
 ggplot(data, aes(cut, price)) + 
@@ -40,3 +41,6 @@ for (i in 1:length(cuts)) {
 ggplot(data, aes(price)) + 
         geom_density(aes(fill = cut), alpha = 0.5) +
         scale_fill_brewer(palette = "Set1", direction = -1) 
+
+library(rsconnect)
+rsconnect::deployApp('/Users/giovannygranados/Desktop/Data_Scientist/R/DevDataProducts/W4/DevDataProduct_CourseProject/Project')
